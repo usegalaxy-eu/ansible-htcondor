@@ -42,13 +42,8 @@
 
 - name: condor repo file
   copy:
-    dest: /etc/yum.repos.d/htcondor-stable-rhel7.repo
-    content: |
-      [htcondor-stable]
-      name=HTCondor Stable RPM Repository for RHEL7
-      baseurl=http://research.cs.wisc.edu/htcondor/yum/stable/rhel7
-      enabled=1
-      gpgcheck=1
+    src: "{{ condor_stable_repo.src }}"
+    dest: "{{ condor_stable_repo.dest }}"
 
 - name: condor install
   package:
