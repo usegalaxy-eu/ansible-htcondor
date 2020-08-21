@@ -1,0 +1,7 @@
+condor_daemons:
+    - COLLECTOR
+    - MASTER
+    - NEGOTIATOR
+    - SCHEDD
+
+condor_extra:
