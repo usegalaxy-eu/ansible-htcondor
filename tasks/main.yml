@@ -73,3 +73,9 @@
     src:  meta_walltime.py
     mode: 0755
   notify: reload condor
+
+- name: enable condor
+  service:
+    name: condor
+    enabled: yes
+    state: started
