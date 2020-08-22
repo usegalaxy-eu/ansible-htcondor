@@ -49,7 +49,6 @@
   package:
     name: condor-all
     state: latest
-    use: yum
 
 - name: Require local config
   lineinfile:
