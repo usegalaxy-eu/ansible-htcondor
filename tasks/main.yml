@@ -57,7 +57,7 @@
     regexp: '^ *REQUIRE_LOCAL_CONFIG_FILE.*'
   notify: reload condor
 
-- name: Send local config
+- name: Copy local config
   template:
     src: condor_config.j2
     dest: /etc/condor/condor_config.local
@@ -65,6 +65,7 @@
     group: root
     mode: 0644
   notify: reload condor
+  when: condor_copy_template | bool
 
 - name: condor walltime script
   copy:

@@ -9,3 +9,5 @@ condor_extra:
 condor_stable_repo:
     src: htcondor-8.8-rhel8.repo
     dest: /etc/yum.repos.d/htcondor-stable-rhel8.repo
+
+condor_copy_template: true
