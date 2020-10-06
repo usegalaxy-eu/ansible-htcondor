@@ -45,6 +45,18 @@
     src: "{{ condor_stable_repo.src }}"
     dest: "{{ condor_stable_repo.dest }}"
 
+- name: Check if EPEL repo is already configured.
+  stat:
+    path: "{{ epel_repofile_path }}"
+  register: epel_repofile_result
+
+- name: condor epel exclude, via lineinfile
+  lineinfile:
+    dest: "{{ epel_repofile_path }}"
+    line: 'exclude=condor*'
+    insertafter: '^ *enabled=1'
+  when: not epel_repofile_result.stat.exists
+
 - name: condor install
   package:
     name: condor-all
