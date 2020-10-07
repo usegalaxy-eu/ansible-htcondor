@@ -94,8 +94,19 @@
     mode: 0755
   notify: reload condor
 
-- name: enable condor
+- name: Populate service facts
+  service_facts:
+
+- name: enable and stop condor
+  service:
+    name: condor
+    enabled: yes
+    state: stopped
+  when: not condor_copy_template | bool
+
+- name: enable and start condor
   service:
     name: condor
     enabled: yes
     state: started
+  when: condor_copy_template | bool

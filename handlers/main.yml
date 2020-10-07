@@ -3,3 +3,4 @@
   service:
     name: condor
     state: reloaded
+  when: ansible_facts.services['condor.service'].state == 'running'
