@@ -42,7 +42,7 @@
 
 - name: condor repo file for RHEL7
   copy:
-    src: "{{ condor_stable_repo.src | default('htcondor-8.8-rhel7.repo')}}"
+    src: "{{ condor_stable_repo.src | default('htcondor-8.6-rhel7.repo')}}"
     dest: "{{ condor_stable_repo.dest }}"
   when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
 
