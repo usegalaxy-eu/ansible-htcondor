@@ -67,8 +67,7 @@
 
 - name: condor install
   package:
-    name: condor-all
-    state: latest
+    name: "{{ condor_package_label }}"
 
 - name: Require local config
   lineinfile:
