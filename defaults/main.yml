@@ -4,7 +4,44 @@ condor_daemons:
     - NEGOTIATOR
     - SCHEDD
 
-condor_extra:
+condor_extra: |
+    # https://htcondor.readthedocs.io/en/latest/admin-manual/configuration-macros.html
+    ########
+    # condor_collector
+    ########
+    # The default maximum age in seconds for ClassAds collected by the condor_collector.
+    # ClassAds older than the maximum age are discarded by the condor_collector as stale. It is defined in seconds.
+    # CLASSAD_LIFETIME = 900
+    ########
+    # condor_negotiator
+    ########
+    # Sets how often the condor_negotiator starts a negotiation cycle. It is defined in seconds.
+    # NEGOTIATOR_INTERVAL = 60
+    # This macro determines how often the condor_negotiator daemon sends a ClassAd update to the condor_collector. It is defined in seconds.
+    # NEGOTIATOR_UPDATE_INTERVAL = 300
+    ########
+    # condor_master
+    ########
+    # This macro determines how often the condor_master sends a ClassAd update to the condor_collector. It is defined in seconds
+    # MASTER_UPDATE_INTERVAL = 300
+    ########
+    # condor_schedd
+    ########
+    # This macro determines the maximum interval for both how often the condor_schedd sends a ClassAd update to the
+    # condor_collector and how often the condor_schedd daemon evaluates jobs. It is defined in terms of seconds
+    # SCHEDD_INTERVAL = 300
+    # This integer-valued macro works together with the JOB_START_COUNT macro to throttle job starts.
+    # The condor_schedd daemon starts $(JOB_START_COUNT) jobs at a time, then delays for $(JOB_START_DELAY) seconds
+    # before starting the next set of jobs. This setting is defined in terms of seconds
+    # JOB_START_DELAY = 0
+    # This macro works together with the JOB_START_DELAY macro to throttle job starts.
+    # The default and minimum values for this integer configuration variable are both 1.
+    # JOB_START_COUNT = 1
+    ########
+    # condor_startd
+    ########
+    # Determines how often the condor_startd should send a ClassAd update to the condor_collector.  It is defined in terms of seconds
+    # UPDATE_INTERVAL = 300
 
 condor_stable_repo:
     dest: /etc/yum.repos.d/htcondor-8.8-stable.repo
