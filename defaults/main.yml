@@ -51,3 +51,6 @@ condor_package_label: condor-all-8.8.12
 condor_copy_template: true
 
 epel_repofile_path: "/etc/yum.repos.d/epel.repo"
+
+condor_system_periodic_hold:  "{{ 30 * 24 * 60 * 60}}"
+condor_system_periodic_remove:  "{{ 7 * 24 * 60 * 60}}"

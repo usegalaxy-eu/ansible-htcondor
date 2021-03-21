@@ -29,7 +29,7 @@ SYSTEM_PERIODIC_HOLD_REASON = \
              "Maximum wallclock time exceeded", \
 		 "Unspecified reason")
 SYSTEM_PERIODIC_REMOVE = \
-  (JobStatus == 5 && time() - EnteredCurrentStatus > {{ condor_system_periodic_hold }})
+  (JobStatus == 5 && time() - EnteredCurrentStatus > {{ condor_system_periodic_remove }})
 {% endif %}
 
 NETWORK_INTERFACE = {{ condor_network_interface }}
