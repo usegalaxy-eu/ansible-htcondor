@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Galaxy Europe
-  description: nstalling HTCondor from the official repository for RHEL systems
+  description: installation of HTCondor from the official repository for RHEL systems
   company: Galaxy Europe
   license: GPL-3.0
   min_ansible_version: 2.5
