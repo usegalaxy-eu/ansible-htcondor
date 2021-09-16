@@ -46,7 +46,7 @@ condor_extra: |
 condor_stable_repo:
     dest: /etc/yum.repos.d/htcondor-8.8-stable.repo
 
-condor_package_label: condor-all-8.8.12
+condor_package_label: condor-all-8.8.15
 
 condor_copy_template: true
 
