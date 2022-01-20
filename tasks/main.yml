@@ -77,7 +77,7 @@
   notify: reload condor
 
 - name: Copy local config
-  template:
+  ansible.builtin.template:
     src: condor_config.j2
     dest: /etc/condor/condor_config.local
     owner: root
@@ -87,7 +87,7 @@
   when: condor_copy_template | bool
 
 - name: condor walltime script
-  copy:
+  ansible.builtin.copy:
     dest: /etc/condor/meta_walltime.py
     src: meta_walltime.py
     mode: 0755
@@ -97,14 +97,14 @@
   service_facts:
 
 - name: enable and stop condor
-  service:
+  ansible.builtin.service:
     name: condor
     enabled: true
     state: stopped
   when: not condor_copy_template | bool
 
 - name: enable and start condor
-  service:
+  ansible.builtin.service:
     name: condor
     enabled: true
     state: started
