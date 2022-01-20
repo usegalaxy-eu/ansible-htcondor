@@ -89,7 +89,7 @@
 - name: condor walltime script
   copy:
     dest: /etc/condor/meta_walltime.py
-    src:  meta_walltime.py
+    src: meta_walltime.py
     mode: 0755
   notify: reload condor
 
@@ -99,13 +99,13 @@
 - name: enable and stop condor
   service:
     name: condor
-    enabled: yes
+    enabled: true
     state: stopped
   when: not condor_copy_template | bool
 
 - name: enable and start condor
   service:
     name: condor
-    enabled: yes
+    enabled: true
     state: started
   when: condor_copy_template | bool

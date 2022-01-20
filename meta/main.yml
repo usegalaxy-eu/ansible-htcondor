@@ -7,13 +7,13 @@ galaxy_info:
   min_ansible_version: 2.5
   role_name: htcondor
   platforms:
-  - name: EL
-    versions:
-    - all
-  - name: Fedora
-    versions:
-    - all
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
   galaxy_tags:
-  - system
+    - system
 dependencies: []
-allow_duplicates: yes
+allow_duplicates: true
