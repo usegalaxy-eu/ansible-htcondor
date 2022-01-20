@@ -2,7 +2,6 @@
 CONDOR_HOST = {{ condor_host }}
 ALLOW_WRITE = {{ condor_allow_write }}
 ALLOW_READ = $(ALLOW_WRITE)
-## 09/15/17 09:22:07 (pid:568706) PERMISSION DENIED to unauthenticated@unmapped from host 132.230.68.63 for command 416 (NEGOTIATE), access level NEGOTIATOR: reason: NEGOTIATOR authorization policy contains no matching ALLOW entry for this request; identifiers used for this host: 132.230.68.63,cn030.bi.uni-freiburg.de, hostname size = 1, original ip address = 132.230.68.63
 ALLOW_NEGOTIATOR = {{ condor_allow_negotiator }}
 
 {% if condor_allow_administrator is defined %}
@@ -13,8 +12,8 @@ ALLOW_OWNER = $(ALLOW_ADMINISTRATOR)
 ALLOW_CLIENT = *
 DAEMON_LIST = {{ ", ".join(condor_daemons) }}
 # Define FS and UID domain
-FILESYSTEM_DOMAIN = bi.uni-freiburg.de
-UID_DOMAIN = bi.uni-freiburg.de
+FILESYSTEM_DOMAIN = {{ condor_fs_domain }}
+UID_DOMAIN = {{ condor_uid_domain }}
 TRUST_UID_DOMAIN = True
 SOFT_UID_DOMAIN = True
 

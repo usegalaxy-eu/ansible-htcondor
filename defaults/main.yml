@@ -55,3 +55,7 @@ epel_repofile_path: "/etc/yum.repos.d/epel.repo"
 
 condor_system_periodic_hold: "{{ 30 * 24 * 60 * 60}}"
 condor_system_periodic_remove: "{{ 7 * 24 * 60 * 60}}"
+
+# see https://htcondor.readthedocs.io/en/v8_8/admin-manual/configuration-macros.html#shared-file-system-configuration-file-macros
+condor_fs_domain: put_here_your_string
+condor_uid_domain: put_here_your_string
