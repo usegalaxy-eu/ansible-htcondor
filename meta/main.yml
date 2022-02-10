@@ -4,7 +4,7 @@ galaxy_info:
   description: installation of HTCondor from the official repository for RHEL systems
   company: Galaxy Europe
   license: GPL-3.0
-  min_ansible_version: 2.5
+  min_ansible_version: 2.11
   role_name: htcondor
   platforms:
     - name: EL

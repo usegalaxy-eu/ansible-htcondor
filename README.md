@@ -1,6 +1,6 @@
 ansible-htcondor
 ================
-Ansible role to install and configure a HTCondor system on a CentOS node.
+Ansible role to install and configure a HTCondor system on a RHEL system.
 
 Requirements
 ------------
