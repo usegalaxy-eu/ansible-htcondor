@@ -57,4 +57,4 @@ condor_fs_domain: put_here_your_string
 condor_uid_domain: put_here_your_string
 
 # Specify a version number, as returned in condor_version command. It will update automatically to the NEWEST version if the installed condor version is lower
-condor_version: 10.2.0
+condor_minimal_version: 10.2.0
