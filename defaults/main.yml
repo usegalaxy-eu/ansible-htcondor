@@ -44,10 +44,6 @@ condor_extra: |
     # Determines how often the condor_startd should send a ClassAd update to the condor_collector.  It is defined in terms of seconds
     # UPDATE_INTERVAL = 300
 
-condor_stable_repo:
-    dest: /etc/yum.repos.d/htcondor-8.8-stable.repo
-
-condor_package_label: condor-all-8.8.15
 
 condor_copy_template: true
 
@@ -59,3 +55,6 @@ condor_system_periodic_remove: "{{ 7 * 24 * 60 * 60}}"
 # see https://htcondor.readthedocs.io/en/v8_8/admin-manual/configuration-macros.html#shared-file-system-configuration-file-macros
 condor_fs_domain: put_here_your_string
 condor_uid_domain: put_here_your_string
+
+# Specify a version number, as returned in condor_version command. It will update automatically to the NEWEST version if the installed condor version is lower
+condor_version: 10.2.0
