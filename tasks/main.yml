@@ -1,6 +1,15 @@
 ---
-- name: condor install
+- name: Check for existing HTCondor installation
+  ansible.builtin.shell: /usr/bin/condor_version | head -n 1 | cut -d ' ' -f2
+  register: condor_installed_version
+
+- name: Print HTCondor version
+  ansible.builtin.debug:
+    var: condor_installed_version.stdout
+
+- name: Condor install
   ansible.builtin.shell: curl -fsSL https://get.htcondor.org | sudo /bin/bash -s -- --no-dry-run
+  when: (not condor_installed_version.rc == 0 and not condor_installed_version.stdout == condor_version)
 
 - name: Require local config
   lineinfile:
