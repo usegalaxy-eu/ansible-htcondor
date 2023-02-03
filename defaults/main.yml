@@ -46,7 +46,7 @@ condor_extra: |
 
 
 #condor_role: submit
-#condor_role: central_manager
+#condor_role: central-manager
 condor_role: execute
 
 condor_host_address: example.org
