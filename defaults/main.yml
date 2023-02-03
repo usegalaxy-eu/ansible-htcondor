@@ -45,6 +45,14 @@ condor_extra: |
     # UPDATE_INTERVAL = 300
 
 
+#condor_role: submit
+#condor_role: central_manager
+condor_role: execute
+
+condor_host_address: example.org
+
+condor_password: IForgotToChangeMyPassword:/
+
 condor_copy_template: true
 
 epel_repofile_path: "/etc/yum.repos.d/epel.repo"
