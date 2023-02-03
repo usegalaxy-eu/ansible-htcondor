@@ -9,7 +9,7 @@
 
 - name: Condor install
   ansible.builtin.shell: curl -fsSL https://get.htcondor.org | sudo GET_HTCONDOR_PASSWORD={{ condor_password }} /bin/bash -s -- --no-dry-run --{{ condor_role }} {{ condor_host_address }}
-  when: (not condor_installed_version.rc == 0 and not condor_installed_version.stdout == condor_version)
+  when: (not condor_installed_version.rc == 0 and not condor_installed_version.stdout == condor_minimal_version)
 
 - name: Require local config
   lineinfile:
