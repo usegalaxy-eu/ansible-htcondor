@@ -8,8 +8,21 @@
     var: condor_installed_version.stdout
 
 - name: Condor install
-  ansible.builtin.shell: curl -fsSL https://get.htcondor.org | sudo /bin/bash -s -- --no-dry-run
-  when: condor_installed_version.stdout <= condor_minimal_version
+  block:
+
+    - name: Install without role
+      ansible.builtin.shell: curl -fsSL https://get.htcondor.org | sudo /bin/bash -s -- --no-dry-run
+      when: (condor_installed_version.stdout <= condor_minimal_version) and not \
+       (condor_role == 'submit' or condor_role == 'execute' or condor_role == 'central_manager')
+
+    - name: Install with role
+      ansible.builtin.shell: |
+        curl -fsSL https://get.htcondor.org | \
+        sudo GET_HTCONDOR_PASSWORD={{ condor_password }} \
+        /bin/bash -s -- --no-dry-run --{{ condor_role }} {{ condor_host }}
+      when: (condor_installed_version.stdout <= condor_minimal_version) and \
+       (condor_role == 'submit' or condor_role == 'execute' or condor_role == 'central_manager')
+
 
 - name: Require local config
   lineinfile:
@@ -34,9 +47,6 @@
     src: meta_walltime.py
     mode: 0755
   notify: reload condor
-
-- name: Populate service facts
-  service_facts:
 
 - name: enable and stop condor
   ansible.builtin.service:

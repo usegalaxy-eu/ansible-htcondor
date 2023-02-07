@@ -45,8 +45,8 @@ condor_extra: |
     # UPDATE_INTERVAL = 300
 
 
-#condor_role: submit
-#condor_role: central-manager
+# condor_role: submit
+# condor_role: central-manager
 condor_role: execute
 
 condor_host: example.org
@@ -64,5 +64,6 @@ condor_system_periodic_remove: "{{ 7 * 24 * 60 * 60}}"
 condor_fs_domain: put_here_your_string
 condor_uid_domain: put_here_your_string
 
-# Specify a version number, as returned in condor_version command. It will update automatically to the NEWEST version if the installed condor version is lower
+# Specify a version number, as returned in condor_version command.
+# It will update automatically to the NEWEST version if the installed condor version is lower
 condor_minimal_version: 10.2.0
