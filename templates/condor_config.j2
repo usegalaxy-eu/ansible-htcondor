@@ -29,7 +29,9 @@ SYSTEM_PERIODIC_REMOVE = \
   (JobStatus == 5 && time() - EnteredCurrentStatus > {{ condor_system_periodic_remove }})
 {% endif %}
 
+{% if condor_network_interface is defined %}
 NETWORK_INTERFACE = {{ condor_network_interface }}
+{% endif %}
 
 {% if condor_extra %}
 {{ condor_extra }}

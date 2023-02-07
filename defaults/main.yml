@@ -49,6 +49,9 @@ condor_extra: |
 # condor_role: central-manager
 condor_role: execute
 
+# reinstalls condor with role and newest version if true
+condor_enforce_role: false
+
 condor_host: example.org
 
 condor_password: IForgotToChangeMyPassword:/
