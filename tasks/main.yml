@@ -3,8 +3,11 @@
   include_tasks: check_roles.yml
 
 - name: Check for existing HTCondor installation
-  ansible.builtin.shell: /usr/bin/condor_version | head -n 1 | cut -d ' ' -f2
+  ansible.builtin.shell: |
+    set -o pipefail #
+    /usr/bin/condor_version | head -n 1 | cut -d ' ' -f2
   register: condor_installed_version
+  ignore_errors: true
 
 - name: Set old version
   ansible.builtin.set_fact:
@@ -60,7 +63,7 @@
 
   when: >
     (not condor_installed_version.stdout) or (old_version | bool) or ((condor_enforce_role | bool) and
-    (condor_role == 'central-manager' and (manager.rc >= 1)) or 
+    (condor_role == 'central-manager' and (manager.rc >= 1)) or
     (condor_role == 'submit' and (submit.rc >= 1)) or
     (condor_role == 'execute' and (execute.rc >= 1)))
 # Reinstalling oly if version outdated or role not found and role is enforced
