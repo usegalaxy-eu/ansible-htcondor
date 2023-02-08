@@ -17,13 +17,17 @@
   ansible.builtin.debug:
     var: condor_installed_version.stdout
 
-- name: Try to update
+- name: Set old_version variable
   block:
     - name: Check if version is older than minimal
       ansible.builtin.set_fact:
         old_version: true
       when: (condor_installed_version.stdout is version(condor_minimal_version, '<'))
 
+  when: condor_installed_version.stdout
+
+- name: Try to update
+  block:
     - name: Try to update condor
       package:
         name: condor
@@ -50,8 +54,7 @@
 
     - name: Install without role
       ansible.builtin.shell: curl -fsSL https://get.htcondor.org | sudo /bin/bash -s -- --no-dry-run
-      when: >
-        not (condor_role == 'submit' or condor_role == 'execute' or condor_role == 'central-manager')
+      when: not condor_role
 
     - name: Install with role
       ansible.builtin.shell: |
