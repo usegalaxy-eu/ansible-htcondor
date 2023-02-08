@@ -54,8 +54,7 @@
 
     - name: Install without role
       ansible.builtin.shell: curl -fsSL https://get.htcondor.org | sudo /bin/bash -s -- --no-dry-run
-      when: >
-        not (condor_role == 'submit' or condor_role == 'execute' or condor_role == 'central-manager')
+      when: not condor_role
 
     - name: Install with role
       ansible.builtin.shell: |
