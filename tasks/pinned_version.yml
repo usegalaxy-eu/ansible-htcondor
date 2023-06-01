@@ -90,7 +90,7 @@
 - name: condor walltime script
   copy:
     dest: /etc/condor/meta_walltime.py
-    src:  meta_walltime.py
+    src: meta_walltime.py
     mode: 0755
   notify: reload condor
 
