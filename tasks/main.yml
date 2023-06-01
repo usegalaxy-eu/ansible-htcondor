@@ -2,7 +2,7 @@
 
 - name: Setup with Script if package version is not pinned
   include_tasks: latest.yml
-  when: htcondor_package_label is not defined 
+  when: htcondor_package_label is not defined
 
 - name: Setup with repos if package version is undefined
   include_tasks: pinned_version.yml
