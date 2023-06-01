@@ -68,6 +68,7 @@
 - name: condor install
   package:
     name: "{{ condor_package_label }}"
+  when: condor_package_label is defined
 
 - name: Require local config
   lineinfile:
