@@ -1,0 +1,5 @@
+---
+kinds:
+  - vars: "**/molecule/*/vars.yml"
+exclude_paths:
+  - .github/
