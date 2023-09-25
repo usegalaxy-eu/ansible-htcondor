@@ -1,0 +1,32 @@
+---
+name: Ansible Molecule
+
+"on":
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  molecule:
+    name: Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - default
+          - role
+    steps:
+      - name: Install Ansible Molecule.
+        run: |
+          pip3 install --user molecule molecule-plugins[podman] ansible-core
+
+      - name: Check out the codebase.
+        uses: actions/checkout@v3
+
+      - name: Run Ansible Molecule.
+        run: |
+          molecule --base-config molecule/base.yml test --scenario-name ${{ matrix.scenario }}
+        env:
+          ANSIBLE_FORCE_COLOR: '1'

@@ -1,42 +1,57 @@
 ---
-- name: Test if manager role is present
+- name: Fail for invalid selections of roles.
+  ansible.builtin.fail:
+    msg: |
+      Invalid value {{ condor_role }} for condor_role. Either choose one of
+      "execute", "submit" or "central-manager"; or choose "all" for a
+      single-machine installation.
+  when: condor_role not in ('all', 'submit', 'execute', 'central-manager')
+
+- name: Check if central manager role is present.
   ansible.builtin.command: grep -nr "use role:get_htcondor_central_manager" /etc/condor/config.d
   register: manager
-  failed_when: "manager.rc == 2"
+  changed_when: false
+  failed_when: manager.rc not in (0, 1, 2)
   ignore_errors: true
 
-- debug:
+- name: Print central manager role installed.
+  ansible.builtin.debug:
     msg: "Central manager role installed."
   when: manager.stdout | length > 0
 
-- debug:
+- name: Print central manager role not installed.
+  ansible.builtin.debug:
     msg: "Central manager role not installed."
-  when: manager.rc == 1
+  when: manager.rc in (1, 2)
 
-- name: Test if submit role is present
+- name: Check if submit role is present.
   ansible.builtin.command: grep -nr "use role:get_htcondor_submit" /etc/condor/config.d
   register: submit
-  failed_when: "submit.rc == 2"
-  ignore_errors: true
+  changed_when: false
+  failed_when: submit.rc not in (0, 1, 2)
 
-- debug:
+- name: Print submit role installed.
+  ansible.builtin.debug:
     msg: "Submit role installed."
   when: submit.stdout | length > 0
 
-- debug:
+- name: Print submit role not installed.
+  ansible.builtin.debug:
     msg: "Submit role not installed."
-  when: submit.rc == 1
+  when: submit.rc in (1, 2)
 
-- name: Test if execute role is present
+- name: Check if execute role is present.
   ansible.builtin.command: grep -nr "use role:get_htcondor_execute" /etc/condor/config.d
   register: execute
-  failed_when: "execute.rc == 2"
-  ignore_errors: true
+  changed_when: false
+  failed_when: execute.rc not in (0, 1, 2)
 
-- debug:
+- name: Print execute role installed.
+  ansible.builtin.debug:
     msg: "Execute role installed."
   when: execute.stdout | length > 0
 
-- debug:
+- name: Print execute role not installed.
+  ansible.builtin.debug:
     msg: "Execute role not installed."
-  when: execute.rc == 1
+  when: execute.rc in (1, 2)

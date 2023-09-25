@@ -1,0 +1,10 @@
+# The role scenario assigns a role (e.g. execute) to the machine.
+---
+- name: Converge
+  hosts: all
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: "Include usegalaxy_eu.htcondor"
+      ansible.builtin.include_role:
+        name: "usegalaxy_eu.htcondor"

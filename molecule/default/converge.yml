@@ -1,0 +1,10 @@
+# This scenario installs the role using a configuration close to the default.
+---
+- name: Converge
+  hosts: all
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: "Include usegalaxy_eu.htcondor"
+      ansible.builtin.include_role:
+        name: "usegalaxy_eu.htcondor"

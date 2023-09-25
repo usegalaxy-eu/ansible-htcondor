@@ -1,0 +1,5 @@
+---
+# HTCondor installation
+condor_role: execute
+condor_host: localhost
+condor_password: molecule

@@ -1,10 +1,125 @@
 ---
+- name: Assume the HTCondor installation script does not need to be run.
+  ansible.builtin.set_fact:
+    condor_install: false
 
-- name: Setup with Script if package version is not pinned
-  include_tasks: latest.yml
-  when: condor_package_label is not defined
+- name: Gather package facts.
+  ansible.builtin.package_facts:
+    manager: auto
 
-- name: Setup with repos if package version is undefined
-  include_tasks: pinned_version.yml
-  when: condor_package_label is defined and ansible_facts['distribution_major_version']|int < 9
-  # because this part is not updated to EL9 yet
+- name: Remove the HTCondor repository package if it differs from the configured release channel.
+  when: "'condor-release' in ansible_facts.packages"
+  block:
+    - name: Get installed htcondor-release channel.
+      ansible.builtin.set_fact:
+        __condor_release_channel: ansible_facts.packages.condor-release[0].version
+
+    - name: Remove HTCondor repository when the configured channel differs.
+      ansible.builtin.package:
+        name: htcondor-release
+        state: absent
+      when: __condor_release_channel != condor_release_channel
+
+    - name: Require HTCondor installation.
+      # Running the HTCondor installation script will install the proper
+      # repository.
+      ansible.builtin.set_fact:
+        condor_install: true
+
+- name: Determine if HTCondor is installed.
+  block:
+    - name: Verify definition of "installed" from the HTCondor installation script.
+      ansible.builtin.stat:
+        path: /etc/condor/condor_config
+      register: condor_config_stat
+
+    - name: Require HTCondor installation.
+      ansible.builtin.set_fact:
+        condor_install: true
+      when: not condor_config_stat.stat.exists
+
+- name: Check role settings.
+  block:
+    - name: Include role check.
+      ansible.builtin.include_tasks: check_roles.yml
+
+    - name: Require HTCondor installation.
+      ansible.builtin.set_fact:
+        condor_install: true
+      when: >
+        (condor_role == 'central-manager' and (manager.rc == 1)) or
+        (condor_role == 'submit' and (submit.rc == 1)) or
+        (condor_role == 'execute' and (execute.rc == 1)) or
+        (condor_role == 'all' and (manager.rc == 1 or submit.rc == 1 or execute.rc == 1))
+
+- name: Download HTCondor installation script.
+  when: condor_install
+  block:
+    - name: Allocate temporary file.
+      ansible.builtin.tempfile:
+        state: file
+        prefix: ansible.usegalaxy-eu.htcondor.
+      register: condor_tempfile_htcondor_get
+      changed_when: false
+
+    - name: Download HTCondor installation script.
+      ansible.builtin.get_url:
+        url: "{{ condor_installation_script }}"
+        dest: "{{ condor_tempfile_htcondor_get.path }}"
+        mode: "0544"
+      changed_when: false
+
+    - name: Set condor_installation_script fact.
+      ansible.builtin.set_fact:
+        condor_installation_script: "{{ condor_tempfile_htcondor_get.path }}"
+
+- name: Install HTCondor.
+  when: condor_install
+  block:
+    - name: Remove previous installation (packages).
+      ansible.builtin.package:
+        name:
+          - condor
+          - minicondor
+        state: absent
+
+    - name: Remove previous installation (condor_config).
+      ansible.builtin.file:
+        # HTCondor's installation script will refuse to run if this file exists.
+        path: /etc/condor/condor_config
+        state: absent
+
+    - name: All roles (single-machine installation).
+      ansible.builtin.command:
+        cmd: "{{ condor_installation_script }} --no-dry-run"
+      when: condor_role == 'all'
+      changed_when: true
+
+    - name: Single role.
+      ansible.builtin.shell:
+        executable: /bin/bash
+        cmd: |
+          env GET_HTCONDOR_PASSWORD={{ condor_password }} "{{ condor_installation_script }}" \
+              --no-dry-run  \
+              --{{ condor_role }} {{ condor_host }}
+      when: condor_role in ('submit', 'execute', 'central-manager')
+      changed_when: true
+
+- name: HTCondor walltime script.
+  ansible.builtin.copy:
+    dest: /usr/local/bin/condor_meta_walltime.py
+    src: meta_walltime.py
+    mode: 0655
+  notify: Reload condor
+
+- name: Ensure condor is enabled each time the role runs.
+  ansible.builtin.service:
+    name: condor
+    enabled: true
+  when: condor_systemd_enable
+
+- name: Ensure condor is started each time the role runs.
+  ansible.builtin.service:
+    name: condor
+    state: started
+  when: condor_systemd_start
