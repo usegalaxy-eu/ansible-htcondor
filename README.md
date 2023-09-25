@@ -46,7 +46,7 @@ Playbook usage example
 
 License
 -------
-GPLv3
+[GPLv3](LICENSE.md)
 
 Author Information
 ------------------
